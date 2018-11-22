@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Text Analysis and Digital Research</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                <section data-background="SNPvsUKIPkeyword.png">
+                <p>
+  			    <h3 style = "background-color:rgba(0,0,0,0.7);">Sentiment Analysis using R</h3>
+                <h3 style = "background-color:rgba(0,0,0,0.7);">Justin Chun-ting Ho</h3>
+                <br>
+                <h4 style = "background-color:rgba(0,0,0,0.7);">Materials: <a href="https://github.com/justinchuntingho/">https://github.com/justinchuntingho/</a></h4>
+  			    </p>
+  			  </section>
+              <section>
+                    <section>
+                        <h2>Text Analysis: <br>The Basic of the Basics</h2>
+                    </section>
+                    <section>
+                        <h2>What is Text Analysis?</h2>
+                    </section>
+                    <section>
+                        <h4><i>“Systematic, objective, quantitative analysis of message characteristics"</i></h3>
+                        <small><a href="https://discovered.ed.ac.uk/primo-explore/fulldisplay?docid=44UOE_ALMA21179428370002466&context=L&vid=44UOE_VU2&search_scope=default_scope&tab=default_tab&lang=en_US">Kimberly A. Neuendorf, <i> The Content Analysis Guidebook</i></a></small>
+                    </section>
+                    <section>
+                        <h3>Bag of Words Assumption</h3>
+                        <div  style="text-align: left;">
+                        <br>
+                        <p><h4>- Word order doesn’t matter</h4></p>
+                        <p><h4>- We just count the frequency of words</h4></p>
+                        <p>
+                        <h4>- The followings are exactly the same:</h4>
+                        I enjoy eating food and being with my family<br>
+                        I enjoy eating my family and being with food<br>
+                        and being eating enjoy family food I my with<br></p>
+                    </div>
+                    </section>
+                    <section>
+                        <h2>The Output</h2>
+                    </section>
+                    <section  data-markdown>
+                        <textarea data-template>
+                            ### 1. Document-Feature Matrix
+                            |    | word1 | word2 | word3 | ... | wordN |
+                            |--- | ----- | ----- | --- | ---|---|
+                            |doc1| 0 | 2 | 0|  | 3 |
+                            |doc2| 1 | 0 | 0|  | 0 |
+                            |doc3| 0 | 0  | 2|   | 1 |
+                            |...|  |   | |   |  |
+                            |docN| 0 | 1  | 0|   | 0 |
+                        </textarea>
+                    </section>
+                    <section  data-markdown>
+                        <textarea data-template>
+                            ### 2. Meta-data Martix
+                            |    | var1 | var2 | var3 | ... | varN |
+                            |--- | ----- | ----- | --- | ---|---|
+                            |doc1| Y | 1 | 0|  | 3 |
+                            |doc2| Y | 0 | 0|  | 2 |
+                            |doc3| N | 0  | 0|   | 1 |
+                            |...|  |   | |   |  |
+                            |docN| Y | 0  | 0|   | 3 |
+                        </textarea>
+                    </section>
+                    <section data-background="monkeyr.gif">
+                        <h2 style = "background-color:rgba(0,0,0,0.7);">Time for R</h2>
+                    </section>
+                </section>
+
+<!-- New Section -->
+                <section>
+                    <!-- Slide here -->
+                      <section>
+                          <!-- First slide as title -->
+                          <h2>Sentiment Analysis</h2>
+                      </section>
+                      <section>
+                          <h3>What is Sentiment Analysis?</h3>
+                          <div  style="text-align: left;">
+                          <br>
+                          <p>Sentiment analysis, also called <i>opinion mining</i>, is the field of study that analyzes <span class="highlight-red">people’s opinions, sentiments, evaluations, appraisals, attitudes, and emotions</span> towards entities such as products, services, organizations, individuals, issues, events, topics, and their attributes.</p>
+                      </section>
+                      <section data-background="sentiment.gif">
+                          <h3 style = "background-color:rgba(0,0,0,0.7);">What is Sentiment?</h3>
+                          <div  style="text-align: left;"  style = "background-color:rgba(0,0,0,0.7);">
+                          <b>- Feelings:</b><br>
+                          <ul><li>Opinions (Good vs Bad)</li>
+                             <li>Emotions (Happy vs Sad)</li>
+                             <li>Attitudes (Like vs Dislike)</li><ul></div>
+                      </section>
+                      <section>
+                          <h3>Levels of Analysis</h3>
+                          <div  style="text-align: left;">
+                          <br>
+                          <h4>- Document level</h4>
+                          <h4>- Sentence level</h4>
+                          <h4>- Entity and Aspect level</h4>
+                      </section>
+                      <section>
+                          <h3>Examples of Usage</h3>
+                          <div  style="text-align: left;">
+                          <br>
+                          <h4>- Product Review</h4>
+                          <h4>- Public Opinion</h4>
+                          <h4>- Voters Support</h4>
+                          <h4>- Wellbeing/Mental Health</h4>
+                      </section>
+                      <section>
+                          <h3>Lexicons</h3>
+                          <br>
+                          <div  style="text-align: left;">
+                          <h4>- "Dictionary" for sentiment</h4>
+                          <b>- Popular Lexicons:</b>
+                          <ul><li>LIWC</li>
+                              <li>SentiwordNet (postive to negative from +1 to -1, neutrality)</li>
+                              <li>AFINN (postive to negative from +5 to -5)</li>
+                              <li>Bing (postive, netgative)</li>
+                              <li>NRC (postive, netgative, anger, anticipation, disgust, fear, joy, sadness, surprise, trust)</li></ul>
+                      </section>
+                      <section>
+                          <h3>Challenges</h3>
+                          <br>
+                          <div  style="text-align: center;">
+                          <h4>1. Opposite orientations in different applications.</h4>
+                          <p>“This camera sucks.” vs <br>“This vacuum cleaner really sucks.”</p>
+                      </section>
+                      <section>
+                          <h3>Challenges</h3>
+                          <br>
+                          <div  style="text-align: center;">
+                          <h4>2. Sentence containing sentiment words may not express any sentiment.</h4>
+                          <p>“If I can find a good camera in the shop, I will buy it.”</p>
+                      </section>
+                      <section data-background="https://media.giphy.com/media/8qDgGmDKTNBBd6pxZD/giphy.gif">
+                          <h3 style = "background-color:rgba(0,0,0,0.7);">Challenges</h3>
+                          <br>
+                          <div style="text-align: center; background-color:rgba(0,0,0,0.7);">
+                          <h4>3. Sarcastism</h4>
+                          <p>"Trump is such a Genius! He cannot even close an umbrella.”</p>
+                          <small>Note: Very common in political discussion, especially on social media.</small></div>
+                      </section>
+                      <section>
+                          <h3>Challenges</h3>
+                          <br>
+                          <div  style="text-align: center;">
+                          <h4>4. Sentences without sentiment words can also imply opinions.</h4>
+                          <p>“This car burns a lot of fuel.”</p>
+                      </section>
+                      <section>
+                          <h2>Example Applications</h2>
+                      </section>
+                      <section>
+                          <img src="https://cdn-images-1.medium.com/max/2000/1*mioZrDpE76cVvdSGwCT-sA.png" height="600">
+                      </section>
+                      <section>
+                          <img src="pagesentbytoken.png" height="600">
+                      </section>
+                      <section data-background="monkeyr.gif">
+                          <h2 style = "background-color:rgba(0,0,0,0.7);">Time for R</h2>
+                      </section>
+                      <!-- End of Slide -->
+                  </section>
+                <!-- Applications -->
+                <section>
+                    <h3>Thank you very much!</h3><br>
+                  <h4>Twitter: @justin_ct_ho<br>Github: justinchuntingho<br>Email: Jusitn.Ho@ed.ac.uk</h4><br>
+                  <h4>Edinburgh Text Analysis Research Group: <a href="https://jiscmail.ac.uk/TEXTANALYSIS">https://jiscmail.ac.uk/TEXTANALYSIS</a></h4>
+                </section>
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
+</html>
